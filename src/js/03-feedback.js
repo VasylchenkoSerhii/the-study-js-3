@@ -9,8 +9,11 @@ const refs = {
 const LOCAL_KEY = "feedback-form-state"
 
 
-refs.form.addEventListener('input', throttle(onFormInput, 250))
+refs.form.addEventListener('input', throttle(onFormInput, 500))
 refs.form.addEventListener('submit', onFormSubmit);
+
+
+const formData = localStorage.getItem(LOCAL_KEY) ? JSON.parse(localStorage.getItem(LOCAL_KEY)) : {};
 
 addValuesOnForm();
 
@@ -23,14 +26,19 @@ function onFormSubmit(e) {
 }
 
 function onFormInput(e) {
-    const { currentTarget: {elements: {message, email}} } = e;
-    localStorage.setItem(LOCAL_KEY, `{"email":"${email.value}","message":"${message.value}"}`);  
+    const { target: { name, value } } = e;
+    formData[name] = value;
+    localStorage.setItem(LOCAL_KEY, JSON.stringify(formData))
 };
 
 function addValuesOnForm () {
     const formValues = JSON.parse(localStorage.getItem(LOCAL_KEY));
     if (formValues) {
-        refs.email.value = formValues.email;
-        refs.textArea.value = formValues.message;
+        if (formValues.email) {
+            refs.email.value = formValues.email;
+        } 
+        if (formValues.message) {
+           refs.textArea.value = formValues.message; 
+        }
     }
 };

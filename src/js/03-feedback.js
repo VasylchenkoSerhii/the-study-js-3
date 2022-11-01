@@ -13,7 +13,7 @@ refs.form.addEventListener('input', throttle(onFormInput, 500))
 refs.form.addEventListener('submit', onFormSubmit);
 
 
-const formData = localStorage.getItem(LOCAL_KEY) ? JSON.parse(localStorage.getItem(LOCAL_KEY)) : {};
+let formData = localStorage.getItem(LOCAL_KEY) ? JSON.parse(localStorage.getItem(LOCAL_KEY)) : {};
 
 addValuesOnForm();
 
@@ -22,7 +22,7 @@ function onFormSubmit(e) {
     console.log(JSON.parse(localStorage.getItem(LOCAL_KEY)))
     localStorage.removeItem(LOCAL_KEY);
     e.currentTarget.reset();
-    
+    formData = {};
 }
 
 function onFormInput(e) {
